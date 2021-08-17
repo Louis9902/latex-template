@@ -1,0 +1,105 @@
+\documentclass[11pt,a4paper,sans]{assingment}
+%\usepackage[a4paper,left=30mm,right=30mm,top=30mm,bottom=30mm]{geometry}
+    
+\input{Configuration/Common}
+\input{Configuration/Listings}
+
+\title{Hallo Welt}
+\author{Louis Seubert}
+
+\begin{document}
+
+% \makeatletter
+% \begin{titlepage}
+% 	\newgeometry{top=2cm, right=4cm, bottom=3cm, left=4cm}
+
+% 	\definecolor{titlepage-accent}{HTML}{ffffff}
+% 	\definecolor{titlepage-color}{HTML}{CF0F3C}
+% 	\newpagecolor{titlepage-color}\afterpage{\restorepagecolor}
+
+% 	\begin{flushleft}
+% 		\noindent
+% 		\vskip -1em
+% 		\color{titlepage-accent}
+% 		\makebox[0pt][l]{\textcolor{titlepage-accent}{\rule{1.3\textwidth}{4pt}}}
+% 		\par
+% 		\noindent
+% 		\setstretch{1.4}
+% 		\vfill
+% 		\noindent {\huge \textbf{\textsf{\@title}}}
+% 		\vskip 1em
+% 		\noindent {\Large \textsf{Hallo}}
+% 		\vskip 2em
+% 		\noindent {\Large \textsf{\@author}}
+% 		\vfill
+% 		\textsf{\@date}
+% 	\end{flushleft}
+% \end{titlepage}
+% \restoregeometry
+
+% \makeatother
+\maketitle
+\tableofcontents
+
+\newpage
+
+
+\section{Hello}
+\subsection{Alpha}
+\newpage
+\section{Hello}
+\newpage
+\section{Hello}
+
+\begin{lstlisting}[language=java]
+public static void main(String[] args) {
+    var x = 1;
+    boolean ok = false;
+}
+class Program {
+    
+}
+\end{lstlisting}
+\vfill
+
+\begin{lstlisting}[language=rust]
+use std::rc::Rc;
+
+/// upside-down tree with a designated position (the *stack pointer*)
+/// and *nodes* of type `A`.
+#[derive(Clone, Debug)]
+pub struct TreeStack<A> {
+    parent: Option<(usize, Rc<TreeStack<A>>)>,
+    value: A,
+    children: Vec<Option<Rc<TreeStack<A>>>>,
+}
+
+impl<A> TreeStack<A> {
+    /// Creates a new `TreeStack<A>` with root label `a`.
+    pub fn new(a: A) -> Self {
+        TreeStack { value: a, children: Vec::new(), parent: None }
+    }
+
+    /// Applies a function `FnMut(&A) -> B` to every node in a `TreeStack<A>`.
+    pub fn map<F, B>(&self, f: &mut F) -> TreeStack<B>
+        where F: FnMut(&A) -> B,
+    {
+        let new_value = f(&self.value);
+        let new_parent = match self.parent {
+            Some((i, ref p)) => Some((i, Rc::new(p.map(f)))),
+            None => None,
+        };
+        let new_children = self.children
+                               .iter()
+                               .map(|o| o.clone().map(|v| Rc::new(v.map(f))))
+                               .collect();
+        TreeStack {
+          parent: new_parent,
+          value: new_value,
+          children: new_children
+        }
+    }
+}
+\end{lstlisting}
+
+\end{document}
